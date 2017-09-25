@@ -1,7 +1,4 @@
-#!/bin/bash
-# base16-shell (https://github.com/chriskempson/base16-shell)
-# Base16 Shell template by Chris Kempson (http://chriskempson.com)
-# Harmonic16 Dark scheme by Jannik Siebert (https://github.com/janniks)
+#! /usr/bin/env bash
 
 # This script doesn't support linux console (use 'vconsole' template instead)
 if [ "${TERM%%-*}" = 'linux' ]; then
@@ -9,49 +6,31 @@ if [ "${TERM%%-*}" = 'linux' ]; then
 fi
 
 add() {
-    # echo "obase=16; $((0x$1 + 0x$2))" | bc
     echo "obase=16; x=$((0x$1 + 0x$2)); if(x<16) print 0; x" | bc
 }
-
-offset=00
 
 h=d5
 m=99
 l=5d
 
-br=06
-bg=16
-bb=22
-
-h1=$(add $h $offset)
-m1=$(add $m $offset)
-l1=$(add $l $offset)
-
-hr1=$(add $h1 $r); hg1=$(add $h1 $g); hb1=$(add $h1 $b)
-mr1=$(add $m1 $r); mg1=$(add $m1 $g); mb1=$(add $m1 $b)
-lr1=$(add $l1 $r); lg1=$(add $l1 $g); lb1=$(add $l1 $b)
+br=05
+bg=17
+bb=24
 
 base00="$br/$bg/$bb" # Base 00
-base01="$(add $br 08)/$(add $bg 08)/$(add $bb 08)"
-base02="$(add $br 40)/$(add $bg 40)/$(add $bb 40)"
-base03="$(add $br 60)/$(add $bg 60)/$(add $bb 60)" # Bright black
-base04="$(add $br 80)/$(add $bg 80)/$(add $bb 80)"
-base05="$(add $br A8)/$(add $bg A8)/$(add $bb A8)" # White
-base06="$(add $br A0)/$(add $bg A0)/$(add $bb A0)"
-base07="$(add $br A8)/$(add $bg A8)/$(add $bb A8)" # Bright white
-# base02="46/56/66" # Base 02
-# base03="66/76/86" # Base 03 - Bright Black
-# base04="86/96/A6" # Base 04
-# base05="A6/B6/C6" # Base 05 - White
-# base06="C6/D6/E6" # Base 06
+base01="$(add $br 0A)/$(add $bg 0A)/$(add $bb 0A)"
+base02="$(add $br 20)/$(add $bg 20)/$(add $bb 20)"
+base03="$(add $br 50)/$(add $bg 50)/$(add $bb 50)" # Bright black
+base04="$(add $br 60)/$(add $bg 60)/$(add $bb 60)"
+base05="$(add $br C0)/$(add $bg C0)/$(add $bb C0)" # White base06="$(add $br D0)/$(add $bg D0)/$(add $bb D0)"
 base07="FF/FF/FF" # Base 07 - Bright White
-base08="$h1/$m1/$l1" # Base 08 - Red
+base08="$h/$m/$l" # Base 08 - Red
 base09="$h/$h/$l" # Base 09
-base0A="$m1/$h1/$l1" # Base 0A - Yellow
-base0B="$l1/$h1/$m1" # Base 0B - Green
-base0C="$l1/$m1/$h1" # Base 0C - Cyan
-base0D="$m1/$l1/$h1" # Base 0D - Blue
-base0E="$h1/$l1/$m1" # Base 0E - Magenta
+base0A="$m/$h/$l" # Base 0A - Yellow
+base0B="$l/$h/$m" # Base 0B - Green
+base0C="$l/$m/$h" # Base 0C - Cyan
+base0D="$m/$l/$h" # Base 0D - Blue
+base0E="$h/$l/$m" # Base 0E - Magenta
 base0F="$h/$l/$l" # Base 0F
 # harmonic
 

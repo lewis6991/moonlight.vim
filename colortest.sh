@@ -1,11 +1,4 @@
 #!/usr/bin/env bash
-theme=$(dirname $0)/scripts/${1:-base16-default-dark.sh}
-if [ -f $theme ]; then
-  # get the color declarations in said theme, assumes there is a block of text that starts with color00= and ends with new line
-  eval $(awk '/^color00=/,/^$/ {print}' $theme | sed 's/#.*//')
-else
-  printf "No theme file %s found\n" $theme
-fi;
 ansi_mappings=(
   Black
   Red
@@ -54,9 +47,8 @@ for padded_value in `seq -w 0 21`; do
   current_color=$(echo ${current_color//\//} | tr '[:lower:]' '[:upper:]') # get rid of slashes, and uppercase
   non_padded_value=$((10#$padded_value))
   base16_color_name=${colors[$non_padded_value]}
-  current_color_label=${current_color:-unknown}
   ansi_label=${ansi_mappings[$non_padded_value]}
   block=$(printf "\x1b[48;5;${non_padded_value}m___________________________")
-  foreground=$(printf "\x1b[38;5;${non_padded_value}m$color_variable")
-  printf "%s %s %s %-30s %s\x1b[0m\n" $foreground $base16_color_name $current_color_label ${ansi_label:-""} $block
-done;
+  foreground=$(printf "\x1b[38;5;${non_padded_value}m")
+  printf "%s %s%s %-15s %s\x1b[0m\n" $base16_color_name $foreground $color_variable ${ansi_label:-""} $block
+done | sort
