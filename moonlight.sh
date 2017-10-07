@@ -17,12 +17,17 @@ br=05
 bg=17
 bb=24
 
-base00="$br/$bg/$bb" # Base 00
-base01="$(add $br 0A)/$(add $bg 0A)/$(add $bb 0A)"
-base02="$(add $br 20)/$(add $bg 20)/$(add $bb 20)"
-base03="$(add $br 50)/$(add $bg 50)/$(add $bb 50)" # Bright black
-base04="$(add $br 60)/$(add $bg 60)/$(add $bb 60)"
-base05="$(add $br C0)/$(add $bg C0)/$(add $bb C0)" # White base06="$(add $br D0)/$(add $bg D0)/$(add $bb D0)"
+gs() {
+    echo "$(add $br $1)/$(add $bg $1)/$(add $bb $1)"
+}
+
+base00="$(gs 00)" # Black
+base01="$(gs 0A)"
+base02="$(gs 20)"
+base03="$(gs 50)" # Bright black
+base04="$(gs 60)"
+base05="$(gs C0)" # White
+base06="$(gs D0)"
 base07="FF/FF/FF" # Base 07 - Bright White
 base08="$h/$m/$l" # Base 08 - Red
 base09="$h/$h/$l" # Base 09
@@ -32,7 +37,6 @@ base0C="$l/$m/$h" # Base 0C - Cyan
 base0D="$m/$l/$h" # Base 0D - Blue
 base0E="$h/$l/$m" # Base 0E - Magenta
 base0F="$h/$l/$l" # Base 0F
-# harmonic
 
 color00=$base00 # Black
 color01=$base08 # Red
@@ -60,20 +64,20 @@ color_foreground=$base05
 color_background=$base00
 
 if [ -n "$TMUX" ]; then
-  # Tell tmux to pass the escape sequences through
-  # (Source: http://permalink.gmane.org/gmane.comp.terminal-emulators.tmux.user/1324)
-  printf_template='\033Ptmux;\033\033]4;%d;rgb:%s\033\033\\\033\\'
-  printf_template_var='\033Ptmux;\033\033]%d;rgb:%s\033\033\\\033\\'
-  printf_template_custom='\033Ptmux;\033\033]%s%s\033\033\\\033\\'
+    # Tell tmux to pass the escape sequences through
+    # (Source: http://permalink.gmane.org/gmane.comp.terminal-emulators.tmux.user/1324)
+    printf_template='\033Ptmux;\033\033]4;%d;rgb:%s\033\033\\\033\\'
+    printf_template_var='\033Ptmux;\033\033]%d;rgb:%s\033\033\\\033\\'
+    printf_template_custom='\033Ptmux;\033\033]%s%s\033\033\\\033\\'
 elif [ "${TERM%%-*}" = "screen" ]; then
-  # GNU screen (screen, screen-256color, screen-256color-bce)
-  printf_template='\033P\033]4;%d;rgb:%s\033\\'
-  printf_template_var='\033P\033]%d;rgb:%s\033\\'
-  printf_template_custom='\033P\033]%s%s\033\\'
+    # GNU screen (screen, screen-256color, screen-256color-bce)
+    printf_template='\033P\033]4;%d;rgb:%s\033\\'
+    printf_template_var='\033P\033]%d;rgb:%s\033\\'
+    printf_template_custom='\033P\033]%s%s\033\\'
 else
-  printf_template='\033]4;%d;rgb:%s\033\\'
-  printf_template_var='\033]%d;rgb:%s\033\\'
-  printf_template_custom='\033]%s%s\033\\'
+    printf_template='\033]4;%d;rgb:%s\033\\'
+    printf_template_var='\033]%d;rgb:%s\033\\'
+    printf_template_custom='\033]%s%s\033\\'
 fi
 
 # 16 color space
@@ -104,21 +108,25 @@ printf $printf_template 21 $color21
 
 # foreground / background / cursor color
 if [ -n "$ITERM_SESSION_ID" ]; then
-  # iTerm2 proprietary escape codes
-  printf $printf_template_custom Pg $h1$h1$h1 # foreground
-  printf $printf_template_custom Ph $br$bg$bb # background
-  printf $printf_template_custom Pi $br$bg$bb # bold color
-  printf $printf_template_custom Pj $h1$h1$h1 # selection color
-  printf $printf_template_custom Pk $br$bg$bb # selected text color
-  printf $printf_template_custom Pl $h1$h1$h1 # cursor
-  printf $printf_template_custom Pm $br$bg$bb # cursor text
+    base00p=${base00///}
+    base02p=${base02///}
+    base05p=${base05///}
+
+    # iTerm2 proprietary escape codes
+    printf $printf_template_custom Pg $base05p # foreground
+    printf $printf_template_custom Ph $base00p # background
+    printf $printf_template_custom Pi $base05p # bold color
+    printf $printf_template_custom Pj $base02p # selection color
+    printf $printf_template_custom Pk $base05p # selected text color
+    printf $printf_template_custom Pl $base05p # cursor
+    printf $printf_template_custom Pm $base00p # cursor text
 else
-  printf $printf_template_var 10 $color_foreground
-  if [ "$BASE16_SHELL_SET_BACKGROUND" != false ]; then
-    printf $printf_template_var 11 $color_background
-    if [ "${TERM%%-*}" = "rxvt" ]; then
-      printf $printf_template_var 708 $color_background # internal border (rxvt)
+    printf $printf_template_var 10 $color_foreground
+    if [ "$BASE16_SHELL_SET_BACKGROUND" != false ]; then
+        printf $printf_template_var 11 $color_background
+        if [ "${TERM%%-*}" = "rxvt" ]; then
+            printf $printf_template_var 708 $color_background # internal border (rxvt)
+        fi
     fi
-  fi
-  printf $printf_template_custom 12 ";7" # cursor (reverse video)
+    printf $printf_template_custom 12 ";7" # cursor (reverse video)
 fi
