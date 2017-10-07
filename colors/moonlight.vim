@@ -89,7 +89,7 @@ call <sid>hi("VisualNOS"   , s:b08, ""   , s:b08_gui, ""       , "")
 call <sid>hi("WarningMsg"  , s:b08, ""   , s:b08_gui, ""       , "")
 call <sid>hi("WildMenu"    , s:b08, ""   , s:b08_gui, ""       , "")
 call <sid>hi("Title"       , s:b0D, ""   , s:b0D_gui, ""       , "")
-call <sid>hi("Conceal"     , s:b0D, s:b00, s:b0D_gui, s:b00_gui, "")
+call <sid>hi("Conceal"     , s:b02, s:b00, s:b02_gui, s:b00_gui, "")
 call <sid>hi("Cursor"      , ""   , s:b05, ""       , s:b05_gui, "")
 call <sid>hi("NonText"     , s:b03, ""   , s:b03_gui, ""       , "")
 call <sid>hi("Normal"      , s:b05, s:b00, s:b05_gui, s:b00_gui, "")  "Background is used for airline_error
