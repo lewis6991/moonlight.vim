@@ -11,11 +11,11 @@ add() {
 
 h=d5
 m=99
-l=5d
+l=6d
 
 br=05
-bg=17
-bb=24
+bg=10
+bb=18
 
 gs() {
     echo "$(add $br $1)/$(add $bg $1)/$(add $bb $1)"
@@ -113,13 +113,19 @@ if [ -n "$ITERM_SESSION_ID" ]; then
     base05p=${base05///}
 
     # iTerm2 proprietary escape codes
-    printf $printf_template_custom Pg $base05p # foreground
-    printf $printf_template_custom Ph $base00p # background
-    printf $printf_template_custom Pi $base05p # bold color
-    printf $printf_template_custom Pj $base02p # selection color
-    printf $printf_template_custom Pk $base05p # selected text color
-    printf $printf_template_custom Pl $base05p # cursor
-    printf $printf_template_custom Pm $base00p # cursor text
+    printf "\033]1337;SetColors=fg=$base05p\a"
+    printf "\033]1337;SetColors=bg=$base00p\a"
+    printf "\033]1337;SetColors=bold=$base05p\a"
+    printf "\033]1337;SetColors=selbg=$base02p\a"
+    printf "\033]1337;SetColors=selfg=$base05p\a"
+    printf "\033]1337;SetColors=curbg=$base05p\a"
+    printf "\033]1337;SetColors=curfg=$base00p\a"
+    printf "\033]6;1;bg;red;brightness;5\a"
+    printf "\033]6;1;bg;green;brightness;16\a"
+    printf "\033]6;1;bg;blue;brightness;24\a"
+    # printf "\033]6;1;bg;red;brightness;0\a"
+    # printf "\033]6;1;bg;green;brightness;30\a"
+    # printf "\033]6;1;bg;blue;brightness;60\a"
 else
     printf $printf_template_var 10 $color_foreground
     if [ "$BASE16_SHELL_SET_BACKGROUND" != false ]; then
