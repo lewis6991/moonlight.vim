@@ -38,6 +38,24 @@ base0D="$m/$l/$h" # Base 0D - Blue
 base0E="$h/$l/$m" # Base 0E - Magenta
 base0F="$h/$l/$l" # Base 0F
 
+# Used to update vim
+# echo "let s:b00_gui = \"#$base00\""
+# echo "let s:b01_gui = \"#$base01\""
+# echo "let s:b02_gui = \"#$base02\""
+# echo "let s:b03_gui = \"#$base03\""
+# echo "let s:b04_gui = \"#$base04\""
+# echo "let s:b05_gui = \"#$base05\""
+# echo "let s:b06_gui = \"#$base06\""
+# echo "let s:b07_gui = \"#$base07\""
+# echo "let s:b08_gui = \"#$base08\""
+# echo "let s:b09_gui = \"#$base09\""
+# echo "let s:b0A_gui = \"#$base0A\""
+# echo "let s:b0B_gui = \"#$base0B\""
+# echo "let s:b0C_gui = \"#$base0C\""
+# echo "let s:b0D_gui = \"#$base0D\""
+# echo "let s:b0E_gui = \"#$base0E\""
+# echo "let s:b0F_gui = \"#$base0F\""
+
 color00=$base00 # Black
 color01=$base08 # Red
 color02=$base0B # Green
