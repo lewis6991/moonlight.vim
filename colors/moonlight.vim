@@ -20,7 +20,7 @@ let s:b0D = "4"
 let s:b0E = "5"
 let s:b0F = "17"
 
-let s:b00_gui = "#051724"
+let s:b00_gui = "#051018"
 let s:b01_gui = "#0F212E"
 let s:b02_gui = "#253744"
 let s:b03_gui = "#556774"
