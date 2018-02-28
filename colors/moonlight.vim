@@ -37,6 +37,30 @@ let s:b0D_gui = "#996dd5"
 let s:b0E_gui = "#d56d99"
 let s:b0F_gui = "#d56d6d"
 
+" Neovim terminal
+let g:terminal_color_0  = s:b00_gui
+let g:terminal_color_18 = s:b01_gui
+let g:terminal_color_19 = s:b02_gui
+let g:terminal_color_8  = s:b03_gui
+let g:terminal_color_20 = s:b04_gui
+let g:terminal_color_7  = s:b05_gui
+let g:terminal_color_21 = s:b06_gui
+let g:terminal_color_15 = s:b07_gui
+let g:terminal_color_1  = s:b08_gui
+let g:terminal_color_9  = s:b08_gui
+let g:terminal_color_16 = s:b09_gui
+let g:terminal_color_11 = s:b0A_gui
+let g:terminal_color_3  = s:b0A_gui
+let g:terminal_color_10 = s:b0B_gui
+let g:terminal_color_02 = s:b0B_gui
+let g:terminal_color_14 = s:b0C_gui
+let g:terminal_color_6  = s:b0C_gui
+let g:terminal_color_12 = s:b0D_gui
+let g:terminal_color_4  = s:b0D_gui
+let g:terminal_color_13 = s:b0E_gui
+let g:terminal_color_5  = s:b0E_gui
+let g:terminal_color_17 = s:b0F_gui
+
 " Highlighting function
 function <sid>hi(group, fg, bg, fg_gui, bg_gui, attr)
     let l:cmd = "highlight ".a:group
