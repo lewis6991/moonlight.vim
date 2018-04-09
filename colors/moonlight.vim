@@ -130,7 +130,7 @@ call <sid>hi("PMenu"       , s:b05, s:b01, s:b05_gui, s:b01_gui, "")
 call <sid>hi("PMenuSel"    , s:b01, s:b05, s:b01_gui, s:b05_gui, "")
 call <sid>hi("TabLine"     , s:b03, s:b01, s:b03_gui, s:b01_gui, "")
 call <sid>hi("TabLineFill" , s:b03, s:b01, s:b03_gui, s:b01_gui, "")
-call <sid>hi("TabLineSel"  , s:b0B, s:b01, s:b0B_gui, s:b01_gui, "")
+call <sid>hi("TabLineSel"  , s:b05, s:b02, s:b05_gui, s:b02_gui, "")
 
 " Standard syntax highlighting
 call <sid>hi("Boolean"     , s:b09, "", s:b09_gui, "", "")
@@ -315,6 +315,12 @@ call <sid>hi("SpellRare" , "", "", "", "", "undercurl")
 
 " ALE highlighting
 call <sid>hi("ALEErrorSign", s:b08, "", s:b08_gui, "", "")
+
+" Statusbar highlighting
+call <sid>hi("StatusbarHunksModified", s:b0D, s:b02, s:b0D_gui, s:b02_gui, "")
+call <sid>hi("StatusbarHunksDeleted" , s:b08, s:b02, s:b08_gui, s:b02_gui, "")
+call <sid>hi("StatusbarHunksAdded"   , s:b0B, s:b02, s:b0B_gui, s:b02_gui, "")
+call <sid>hi("StatusbarHunks"        , s:b05, s:b02, s:b05_gui, s:b02_gui, "")
 
 " Remove functions
 delf <sid>hi
