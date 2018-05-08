@@ -9,8 +9,8 @@ m=99
 l=6d
 
 br=05
-bg=10
-bb=18
+bg=08
+bb=10
 
 gs() {
     echo "$(add $br $1)/$(add $bg $1)/$(add $bb $1)"
