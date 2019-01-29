@@ -17,7 +17,7 @@ let s:colors = {
     \         '09' : '16',
     \         '0A' : '3',
     \         '0B' : '2',
-    \         '0C' : '6',
+    \         '0C' : '6', '0Cb' : '6',
     \         '0D' : '4',
     \         '0E' : '5',
     \         '0F' : '17'
@@ -35,7 +35,7 @@ let s:colors = {
     \         '09' : '#D5D56D',
     \         '0A' : '#99D56D',
     \         '0B' : '#6DD599',
-    \         '0C' : '#6D99D5',
+    \         '0C' : '#6D99D5', '0Cb' : '#9FCCF8',
     \         '0D' : '#996DD5',
     \         '0E' : '#D56D99',
     \         '0F' : '#D56D6D'
@@ -71,34 +71,26 @@ function <sid>hi(group, fg, bg, attr)
     " let l:cmd = 'highlight '.a:group
     let l:cmd = ['highlight', a:group]
 
-    let l:fg_term = s:colors['cterm'][a:fg]
-    let l:bg_term = s:colors['cterm'][a:bg]
-    let l:fg_gui  = s:colors['gui'][a:fg]
-    let l:bg_gui  = s:colors['gui'][a:bg]
+    if a:fg !=# ''
+        let l:cmd += [
+            \     'ctermfg='.s:colors['cterm'][a:fg],
+            \     'guifg='.s:colors['gui'][a:fg]
+            \ ]
+    endif
 
-    if l:fg_term !=# ''
-        let l:cmd += ['ctermfg='.l:fg_term]
+    if a:bg !=# ''
+        let l:cmd += [
+            \     'ctermbg='.s:colors['cterm'][a:bg],
+            \     'guibg='.s:colors['gui'][a:bg]
+            \ ]
     endif
-    if l:bg_term !=# ''
-        let l:cmd += ['ctermbg='.l:bg_term]
-    endif
-    if l:fg_gui !=# ''
-        let l:cmd += ['guifg='.l:fg_gui]
-    endif
-    if l:bg_gui !=# ''
-        let l:cmd += ['guibg='.l:bg_gui]
-    endif
+
     if a:attr !=# ''
-        let l:cmd += ['cterm='.a:attr]
-        let l:cmd += ['gui='.a:attr]
+        let l:cmd += ['cterm='.a:attr, 'gui='.a:attr]
     endif
 
     execute('highlight clear '.a:group)
-    if   l:fg_term !=# ''
-    \ || l:bg_term !=# ''
-    \ || l:fg_gui  !=# ''
-    \ || l:bg_gui  !=# ''
-    \ || a:attr    !=# ''
+    if a:fg !=# '' || a:bg !=# '' || a:attr !=# ''
         execute(join(l:cmd))
     endif
 endfunction
@@ -137,7 +129,7 @@ call <sid>hi('Cursor'                    , ''  , '05', '')
 call <sid>hi('NonText'                   , '03', ''  , '')
 call <sid>hi('Normal'                    , '05', '00', '')  "Background is used for airline_error
 call <sid>hi('LineNr'                    , '03', '01', '')
-call <sid>hi('SignColumn'                , '03', '01', '')
+call <sid>hi('SignColumn'                , '03', '00', '')
 call <sid>hi('StatusLine'                , '04', '02', '')
 call <sid>hi('StatusLineNC'              , '03', '01', '')
 call <sid>hi('VertSplit'                 , '02', '02', '')
@@ -242,10 +234,10 @@ call <sid>hi('gitCommitOverflow'         , '05', ''  , '')
 call <sid>hi('gitCommitSummary'          , '05', ''  , '')
 
 " GitGutter highlighting
-call <sid>hi('GitGutterAdd'              , '0B', ''  , '')
-call <sid>hi('GitGutterChange'           , '0D', ''  , '')
-call <sid>hi('GitGutterDelete'           , '08', ''  , '')
-call <sid>hi('GitGutterChangeDelete'     , '0E', ''  , '')
+call <sid>hi('GitGutterAdd'              , '0B', '01', '')
+call <sid>hi('GitGutterChange'           , '0D', '01', '')
+call <sid>hi('GitGutterDelete'           , '08', '01', '')
+call <sid>hi('GitGutterChangeDelete'     , '0E', '01', '')
 
 " Signify highlighting
 hi link SignifySignAdd    GitGutterAdd
@@ -341,7 +333,24 @@ call <sid>hi('StatusbarHunksDeleted'     , '08', '02', '')
 call <sid>hi('StatusbarHunksAdded'       , '0B', '02', '')
 call <sid>hi('StatusbarHunks'            , '05', '02', '')
 
-" Remove functions
-delf <sid>hi
+" https://github.com/numirias/semshi
+function <sid>semshi_hi()
+    call <sid>hi('semshiLocal'          , '08' , '04', '')
+    call <sid>hi('semshiGlobal'         , '07' , ''  , '')  " Bright white
+    call <sid>hi('semshiImported'       , '0A' , ''  , '')  " Yellow
+    call <sid>hi('semshiParameter'      , '0Cb', ''  , '')  " Cyan
+    call <sid>hi('semshiParameterUnused', '0Cb', '02', '')
+    call <sid>hi('semshiFree'           , '05' , '02', '')
+    call <sid>hi('semshiBuiltin'        , '0D' , ''  , '')  " Blue
+    call <sid>hi('semshiAttribute'      , '08' , '03', '')
+    call <sid>hi('semshiSelf'           , '08' , '03', '')
+    call <sid>hi('semshiUnresolved'     , '08' , '03', 'bold')
+    call <sid>hi('semshiSelected'       , ''   , '05', '')
+    call <sid>hi('semshiErrorSign'      , '08' , '03', '')
+    call <sid>hi('semshiErrorChar'      , '08' , '03', '')
+endfunction
 
-unlet s:colors
+autocmd! FileType python
+    \ | if exists('g:semshi#active')
+    \ |     call <sid>semshi_hi()
+    \ | endif
