@@ -50,5 +50,5 @@ for padded_value in `seq -w 0 21`; do
   ansi_label=${ansi_mappings[$non_padded_value]}
   block=$(printf "\x1b[48;5;${non_padded_value}m___________________________")
   foreground=$(printf "\x1b[38;5;${non_padded_value}m")
-  printf "%s %s%s %-15s %s\x1b[0m\n" $base16_color_name $foreground $color_variable ${ansi_label:-""} $block
-done | sort
+  printf "%s %s %s %-15s %s\x1b[0m\n" $base16_color_name $foreground $color_variable ${ansi_label:-""} $block
+done
