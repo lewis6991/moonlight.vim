@@ -8,19 +8,19 @@ h=d5
 m=99
 l=6d
 
-br=05
-bg=0F
-bb=18
+br=04
+bg=0A
+bb=14
 
 gs() {
     echo "$(add $br $1)/$(add $bg $1)/$(add $bb $1)"
 }
 
 base00="$(gs 00)" # Black
-base01="$(gs 0A)"
-base02="$(gs 20)"
+base01="$(gs 08)"
+base02="$(gs 12)"
 base03="$(gs 40)" # Bright black
-base04="$(gs 80)"
+base04="$(gs 60)"
 base05="$(gs C0)" # White
 base06="$(gs D0)"
 base07="FF/FF/FF" # Base 07 - Bright White
@@ -34,22 +34,22 @@ base0E="$h/$l/$m" # Base 0E - Magenta
 base0F="$h/$l/$l" # Base 0F
 
 # # Used to update vim
-# echo "'00' : '#${base00//\//}',"
-# echo "'01' : '#${base01//\//}',"
-# echo "'02' : '#${base02//\//}',"
-# echo "'03' : '#${base03//\//}',"
-# echo "'04' : '#${base04//\//}',"
-# echo "'05' : '#${base05//\//}',"
-# echo "'06' : '#${base06//\//}',"
-# echo "'07' : '#${base07//\//}',"
-# echo "'08' : '#${base08//\//}',"
-# echo "'09' : '#${base09//\//}',"
-# echo "'0A' : '#${base0A//\//}',"
-# echo "'0B' : '#${base0B//\//}',"
-# echo "'0C' : '#${base0C//\//}',"
-# echo "'0D' : '#${base0D//\//}',"
-# echo "'0E' : '#${base0E//\//}',"
-# echo "'0F' : '#${base0F//\//}',"
+# echo "\\  '00' : '#${base00//\//}',"
+# echo "\\  '01' : '#${base01//\//}',"
+# echo "\\  '02' : '#${base02//\//}',"
+# echo "\\  '03' : '#${base03//\//}',"
+# echo "\\  '04' : '#${base04//\//}',"
+# echo "\\  '05' : '#${base05//\//}',"
+# echo "\\  '06' : '#${base06//\//}',"
+# echo "\\  '07' : '#${base07//\//}',"
+# echo "\\  '08' : '#${base08//\//}',"
+# echo "\\  '09' : '#${base09//\//}',"
+# echo "\\  '0A' : '#${base0A//\//}',"
+# echo "\\  '0B' : '#${base0B//\//}',"
+# echo "\\  '0C' : '#${base0C//\//}',"
+# echo "\\  '0D' : '#${base0D//\//}',"
+# echo "\\  '0E' : '#${base0E//\//}',"
+# echo "\\  '0F' : '#${base0F//\//}',"
 
 color00=$base00 # Black
 color01=$base08 # Red

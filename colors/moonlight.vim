@@ -23,13 +23,13 @@ let s:colors = {
     \         '0F' : '17'
     \     },
     \     'gui': {
-    \         '00' : '#050F18',
-    \         '01' : '#0F1922',
-    \         '02' : '#252F38',
-    \         '03' : '#454F58',
-    \         '04' : '#858F98',
-    \         '05' : '#C5CFD8',
-    \         '06' : '#D5DFE8',
+    \         '00' : '#040A14',
+    \         '01' : '#0C121C',
+    \         '02' : '#161C26',
+    \         '03' : '#444A54',
+    \         '04' : '#646A74',
+    \         '05' : '#C4CAD4',
+    \         '06' : '#D4DAE4',
     \         '07' : '#FFFFFF',
     \         '08' : '#d5996d',
     \         '09' : '#d5d56d',
@@ -38,7 +38,7 @@ let s:colors = {
     \         '0C' : '#6d99d5', '0Cb' : '#9FCCF8',
     \         '0D' : '#996dd5',
     \         '0E' : '#d56d99',
-    \         '0F' : '#d56d6d'
+    \         '0F' : '#d56d6d',
     \     }
     \ }
 
@@ -122,7 +122,7 @@ call <sid>hi('SearchCurrent'             , '03', '0A', '')
 call <sid>hi('Visual'                    , ''  , '02', '')
 call <sid>hi('VisualNOS'                 , '08', ''  , '')
 call <sid>hi('WarningMsg'                , '08', ''  , '')
-call <sid>hi('WildMenu'                  , '08', ''  , '')
+call <sid>hi('WildMenu'                  , '08', '02', '')
 call <sid>hi('Title'                     , '0D', ''  , '')
 call <sid>hi('Conceal'                   , '02', '00', '')
 call <sid>hi('Cursor'                    , ''  , '05', '')
@@ -342,8 +342,8 @@ function <sid>semshi_hi()
     call <sid>hi('semshiParameterUnused', '0Cb', '02', '')
     call <sid>hi('semshiFree'           , '05' , '02', '')
     call <sid>hi('semshiBuiltin'        , '0D' , ''  , '')  " Blue
-    call <sid>hi('semshiAttribute'      , '08' , '03', '')
-    call <sid>hi('semshiSelf'           , '08' , '03', '')
+    call <sid>hi('semshiAttribute'      , '0C' , ''  , '')
+    call <sid>hi('semshiSelf'           , '0C' , ''  , '')
     call <sid>hi('semshiUnresolved'     , '08' , '03', 'bold')
     call <sid>hi('semshiSelected'       , ''   , '05', '')
     call <sid>hi('semshiErrorSign'      , '08' , '03', '')
