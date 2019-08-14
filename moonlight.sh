@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 
-add() {
-    echo "obase=16; x=$((0x$1 + 0x$2)); if(x<16) print 0; x" | bc
+op() {
+    echo "obase=16; x=$((0x$1 $2 0x$3)); if(x<16) print 0; x" | bc
 }
 
 h=d5
@@ -9,11 +9,11 @@ m=99
 l=6d
 
 br=04
-bg=0A
-bb=14
+bg=06
+bb=10
 
 gs() {
-    echo "$(add $br $1)/$(add $bg $1)/$(add $bb $1)"
+    echo "$(op $br + $1)/$(op $bg + $1)/$(op $bb + $1)"
 }
 
 base00="$(gs 00)" # Black
@@ -21,7 +21,7 @@ base01="$(gs 08)"
 base02="$(gs 12)"
 base03="$(gs 40)" # Bright black
 base04="$(gs 60)"
-base05="$(gs C0)" # White
+base05="$(gs B0)" # White
 base06="$(gs D0)"
 base07="FF/FF/FF" # Base 07 - Bright White
 base08="$h/$m/$l" # Base 08 - Red

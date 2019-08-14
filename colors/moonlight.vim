@@ -16,31 +16,38 @@ let s:colors = {
     \         '08' : '1',
     \         '09' : '16',
     \         '0A' : '3',
-    \         '0B' : '2',
+    \         '0B' : '2', '0Bdim': '19',
     \         '0C' : '6', '0Cb' : '6',
-    \         '0D' : '4',
+    \         '0D' : '4', '0Ddim' : '19', '0Ddim1': '8',
     \         '0E' : '5',
     \         '0F' : '17'
     \     },
     \     'gui': {
-    \         '00' : '#040A14',
-    \         '01' : '#0C121C',
-    \         '02' : '#161C26',
-    \         '03' : '#444A54',
-    \         '04' : '#646A74',
-    \         '05' : '#C4CAD4',
-    \         '06' : '#D4DAE4',
+    \         '00' : '#040610',
+    \         '01' : '#0C0E18',
+    \         '02' : '#161822',
+    \         '03' : '#444650',
+    \         '04' : '#646670',
+    \         '05' : '#B4B6C0',
+    \         '06' : '#D4D6E0',
     \         '07' : '#FFFFFF',
     \         '08' : '#d5996d',
     \         '09' : '#d5d56d',
     \         '0A' : '#99d56d',
     \         '0B' : '#6dd599',
-    \         '0C' : '#6d99d5', '0Cb' : '#9FCCF8',
+    \         '0C' : '#6d99d5',
     \         '0D' : '#996dd5',
     \         '0E' : '#d56d99',
     \         '0F' : '#d56d6d',
+    \         '0Bdim': '#19332F',
+    \         '0Cb' : '#9FCCF8',
+    \         '0Ddim' : '#221E3B', '0Ddim1' : '#4F3C75',
     \     }
     \ }
+
+" 0Bdim : https://meyerweb.com/eric/tools/color-blend/#040A14:6DD599:4:hex
+" 0Ddim : https://meyerweb.com/eric/tools/color-blend/#040A14:996DD5:4:hex
+" 0Ddim1: https://meyerweb.com/eric/tools/color-blend/#040A14:996DD5:1:hex
 
 " Neovim terminal
 let g:terminal_color_0  = s:colors['gui']['00']
@@ -67,7 +74,7 @@ let g:terminal_color_5  = s:colors['gui']['0E']
 let g:terminal_color_17 = s:colors['gui']['0F']
 
 " Highlighting function
-function <sid>hi(group, fg, bg, attr)
+function! <sid>hi(group, fg, bg, attr)
     " let l:cmd = 'highlight '.a:group
     let l:cmd = ['highlight', a:group]
 
@@ -129,7 +136,7 @@ call <sid>hi('Cursor'                    , ''  , '05', '')
 call <sid>hi('NonText'                   , '03', ''  , '')
 call <sid>hi('Normal'                    , '05', '00', '')  "Background is used for airline_error
 call <sid>hi('LineNr'                    , '03', '01', '')
-call <sid>hi('SignColumn'                , '03', '00', '')
+call <sid>hi('SignColumn'                , '03', '01', '')
 call <sid>hi('StatusLine'                , '04', '02', '')
 call <sid>hi('StatusLineNC'              , '03', '01', '')
 call <sid>hi('VertSplit'                 , '02', '02', '')
@@ -146,7 +153,7 @@ call <sid>hi('TabLineSel'                , '05', '02', '')
 " Standard syntax highlighting
 call <sid>hi('Boolean'                   , '09', ''  , '')
 call <sid>hi('Character'                 , '0C', ''  , '')
-call <sid>hi('Comment'                   , '03', ''  , '')
+call <sid>hi('Comment'                   , '03', ''  , 'italic')
 call <sid>hi('Conditional'               , '0E', ''  , '')
 call <sid>hi('Constant'                  , '09', ''  , '')
 call <sid>hi('Define'                    , '0E', ''  , '')
@@ -190,17 +197,6 @@ call <sid>hi('cssBraces'                 , '05', ''  , '')
 call <sid>hi('cssClassName'              , '0E', ''  , '')
 call <sid>hi('cssColor'                  , '0C', ''  , '')
 
-" Diff highlighting
-call <sid>hi('DiffAdd'                   , '0B', '01', '')
-call <sid>hi('DiffChange'                , '03', '01', '')
-call <sid>hi('DiffDelete'                , '08', '01', '')
-call <sid>hi('DiffText'                  , '0D', '01', '')
-call <sid>hi('DiffAdded'                 , '0B', '00', '')
-call <sid>hi('DiffFile'                  , '08', '00', '')
-call <sid>hi('DiffNewFile'               , '0B', '00', '')
-call <sid>hi('DiffLine'                  , '0D', '00', '')
-call <sid>hi('DiffRemoved'               , '08', '00', '')
-
 " Git highlighting
 call <sid>hi('gitcommitOverflow'         , '08', ''  , '')
 call <sid>hi('gitcommitSummary'          , '0B', ''  , '')
@@ -219,19 +215,15 @@ call <sid>hi('gitcommitDiscardedFile'    , '08', ''  , 'bold')
 call <sid>hi('gitcommitSelectedFile'     , '0B', ''  , 'bold')
 
 " Diff highlighting
-call <sid>hi('DiffAdd'                   , '0B', '01', '')
-call <sid>hi('DiffChange'                , '0E', '01', '')
-call <sid>hi('DiffDelete'                , '08', '01', '')
-call <sid>hi('DiffText'                  , '05', '01', '')
-call <sid>hi('DiffAdded'                 , '0B', '01', '')
-call <sid>hi('DiffFile'                  , '05', '01', '')
-call <sid>hi('DiffNewFile'               , '05', '01', '')
-call <sid>hi('DiffLine'                  , '0A', '01', '')
-call <sid>hi('DiffRemoved'               , '08', '01', '')
-
-" Git highlighting
-call <sid>hi('gitCommitOverflow'         , '05', ''  , '')
-call <sid>hi('gitCommitSummary'          , '05', ''  , '')
+call <sid>hi('DiffAdd'                   , ''  , '0Bdim' , '')
+call <sid>hi('DiffChange'                , ''  , '0Ddim' , '')
+call <sid>hi('DiffDelete'                , '08', '02'    , '')
+call <sid>hi('DiffText'                  , ''  , '0Ddim1', '')
+call <sid>hi('DiffAdded'                 , '0B', '02'    , '')
+call <sid>hi('DiffFile'                  , '05', '02'    , '')
+call <sid>hi('DiffNewFile'               , '05', '02'    , '')
+call <sid>hi('DiffLine'                  , '0A', '02'    , '')
+call <sid>hi('DiffRemoved'               , '08', '02'    , '')
 
 " GitGutter highlighting
 call <sid>hi('GitGutterAdd'              , '0B', '01', '')
@@ -334,7 +326,7 @@ call <sid>hi('StatusbarHunksAdded'       , '0B', '02', '')
 call <sid>hi('StatusbarHunks'            , '05', '02', '')
 
 " https://github.com/numirias/semshi
-function <sid>semshi_hi()
+function! <sid>semshi_hi()
     call <sid>hi('semshiLocal'          , '08' , '04', '')
     call <sid>hi('semshiGlobal'         , '07' , ''  , '')  " Bright white
     call <sid>hi('semshiImported'       , '0A' , ''  , '')  " Yellow
