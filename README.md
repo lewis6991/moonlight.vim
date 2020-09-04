@@ -2,6 +2,8 @@ My personal colorscheme for shell and vim.
 
 The scheme tries to adhere to the [base 16 styling guide](https://github.com/chriskempson/base16/blob/master/styling.md).
 
+![colors](colors.png)
+
 # Installation
 
 ## Vim/Neovim
