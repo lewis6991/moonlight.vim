@@ -7,15 +7,21 @@ ansi_mappings=(
   Blue
   Magenta
   Cyan
-  White
-  Bright_Black
-  Bright_Red
-  Bright_Green
-  Bright_Yellow
-  Bright_Blue
-  Bright_Magenta
-  Bright_Cyan
-  Bright_White
+  ''
+  ''
+  ''
+  ''
+  ''
+  ''
+  ''
+  ''
+  ''
+  Orange
+  Purple
+  ''
+  ''
+  ''
+  ''
 )
 colors=(
   base00
@@ -41,7 +47,7 @@ colors=(
   base04
   base06
 )
-for padded_value in `seq -w 0 21`; do
+for padded_value in 00 01 02 03 04 05 06 07 08 15 16 17 18 19 20 21; do
   color_variable="color${padded_value}"
   eval current_color=\$${color_variable}
   current_color=$(echo ${current_color//\//} | tr '[:lower:]' '[:upper:]') # get rid of slashes, and uppercase
@@ -50,5 +56,5 @@ for padded_value in `seq -w 0 21`; do
   ansi_label=${ansi_mappings[$non_padded_value]}
   block=$(printf "\x1b[48;5;${non_padded_value}m___________________________")
   foreground=$(printf "\x1b[38;5;${non_padded_value}m")
-  printf "%s %s %s %-15s %s\x1b[0m\n" $base16_color_name $foreground $color_variable ${ansi_label:-""} $block
-done
+  printf "%s %s %-16s %s%s\x1b[0m\n" $base16_color_name $color_variable ${ansi_label:-""} $foreground $block
+done | sort

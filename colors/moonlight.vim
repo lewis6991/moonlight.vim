@@ -3,51 +3,38 @@ hi clear
 syntax reset
 let g:colors_name = 'moonlight'
 
-let s:colors = {
-    \     'cterm': {
-    \         '00' : '0',
-    \         '01' : '18',
-    \         '02' : '19',
-    \         '03' : '8',
-    \         '04' : '20',
-    \         '05' : '7',
-    \         '06' : '21',
-    \         '07' : '15',
-    \         '08' : '1',
-    \         '09' : '16',
-    \         '0A' : '3',
-    \         '0B' : '2', '0Bdim': '19',
-    \         '0C' : '6', '0Cb' : '6',
-    \         '0D' : '4', '0Ddim' : '19', '0Ddim1': '8',
-    \         '0E' : '5',
-    \         '0F' : '17'
-    \     },
-    \     'gui': {
-    \         '00' : '#040610',
-    \         '01' : '#0C0E18',
-    \         '02' : '#161822',
-    \         '03' : '#444650',
-    \         '04' : '#646670',
-    \         '05' : '#B4B6C0',
-    \         '06' : '#D4D6E0',
-    \         '07' : '#FFFFFF',
-    \         '08' : '#d5996d',
-    \         '09' : '#d5d56d',
-    \         '0A' : '#99d56d',
-    \         '0B' : '#6dd599',
-    \         '0C' : '#6d99d5',
-    \         '0D' : '#996dd5',
-    \         '0E' : '#d56d99',
-    \         '0F' : '#d56d6d',
-    \         '0Bdim': '#19332F',
-    \         '0Cb' : '#9FCCF8',
-    \         '0Ddim' : '#221E3B', '0Ddim1' : '#4F3C75',
-    \     }
-    \ }
+exec 'source '.expand('<sfile>:p:h').'/colors.vim'
+let s:colors = g:colors
+unlet g:colors
 
-" 0Bdim : https://meyerweb.com/eric/tools/color-blend/#040A14:6DD599:4:hex
-" 0Ddim : https://meyerweb.com/eric/tools/color-blend/#040A14:996DD5:4:hex
-" 0Ddim1: https://meyerweb.com/eric/tools/color-blend/#040A14:996DD5:1:hex
+function! <sid>blend(color1, color2, percent) abort
+    let c1r = str2nr(a:color1[1:2], 16)
+    let c1g = str2nr(a:color1[3:4], 16)
+    let c1b = str2nr(a:color1[5:6], 16)
+
+    let c2r = str2nr(a:color2[1:2], 16)
+    let c2g = str2nr(a:color2[3:4], 16)
+    let c2b = str2nr(a:color2[5:6], 16)
+
+    let c3r = ((c1r + c2r) * a:percent) / 100
+    let c3g = ((c1g + c2g) * a:percent) / 100
+    let c3b = ((c1b + c2b) * a:percent) / 100
+
+    return printf('#%2x%2x%2x', c3r, c3g, c3b)
+endfunction
+
+" Blend some colors for some variety. Blended colors give some illusion of
+" transparency.
+for i in ['01', '02', '0B', '0D', '0E']
+    let s:colors.gui[i.'dim1'] = <sid>blend(s:colors.gui['00'], s:colors.gui[i], 20)
+    let s:colors.cterm[i.'dim1'] = s:colors.cterm[i]
+
+    let s:colors.gui[i.'dim2'] = <sid>blend(s:colors.gui['00'], s:colors.gui[i], 40)
+    let s:colors.cterm[i.'dim2'] = s:colors.cterm[i]
+
+    let s:colors.gui[i.'dim3'] = <sid>blend(s:colors.gui['00'], s:colors.gui[i], 50)
+    let s:colors.cterm[i.'dim3'] = s:colors.cterm[i]
+endfor
 
 " Neovim terminal
 let g:terminal_color_0  = s:colors['gui']['00']
@@ -64,7 +51,7 @@ let g:terminal_color_16 = s:colors['gui']['09']
 let g:terminal_color_11 = s:colors['gui']['0A']
 let g:terminal_color_3  = s:colors['gui']['0A']
 let g:terminal_color_10 = s:colors['gui']['0B']
-let g:terminal_color_02 = s:colors['gui']['0B']
+let g:terminal_color_2  = s:colors['gui']['0B']
 let g:terminal_color_14 = s:colors['gui']['0C']
 let g:terminal_color_6  = s:colors['gui']['0C']
 let g:terminal_color_12 = s:colors['gui']['0D']
@@ -74,32 +61,18 @@ let g:terminal_color_5  = s:colors['gui']['0E']
 let g:terminal_color_17 = s:colors['gui']['0F']
 
 " Highlighting function
-function! <sid>hi(group, fg, bg, attr)
-    " let l:cmd = 'highlight '.a:group
-    let l:cmd = ['highlight', a:group]
-
-    if a:fg !=# ''
-        let l:cmd += [
-            \     'ctermfg='.s:colors['cterm'][a:fg],
-            \     'guifg='.s:colors['gui'][a:fg]
-            \ ]
-    endif
-
-    if a:bg !=# ''
-        let l:cmd += [
-            \     'ctermbg='.s:colors['cterm'][a:bg],
-            \     'guibg='.s:colors['gui'][a:bg]
-            \ ]
-    endif
-
-    if a:attr !=# ''
-        let l:cmd += ['cterm='.a:attr, 'gui='.a:attr]
-    endif
-
-    execute('highlight clear '.a:group)
-    if a:fg !=# '' || a:bg !=# '' || a:attr !=# ''
-        execute(join(l:cmd))
-    endif
+function! <sid>hi(group, fg, bg, attr) abort
+    let l:attr = a:attr ==# '' ? 'None' : a:attr
+    execute(join([
+        \     'highlight',
+        \     a:group,
+        \     'ctermfg=' . (a:fg ==# '' ? 'None' : s:colors.cterm[a:fg]),
+        \     'guifg='   . (a:fg ==# '' ? 'None' : s:colors.gui[a:fg]),
+        \     'ctermbg=' . (a:bg ==# '' ? 'None' : s:colors.cterm[a:bg]),
+        \     'guibg='   . (a:bg ==# '' ? 'None' : s:colors.gui[a:bg]),
+        \     'cterm='   . l:attr,
+        \     'gui='     . l:attr
+        \ ]))
 endfunction
 
 " Vim editor colors
@@ -134,12 +107,20 @@ call <sid>hi('Title'                     , '0D', ''  , '')
 call <sid>hi('Conceal'                   , '02', '00', '')
 call <sid>hi('Cursor'                    , ''  , '05', '')
 call <sid>hi('NonText'                   , '03', ''  , '')
-call <sid>hi('Normal'                    , '05', '00', '')  "Background is used for airline_error
+if has('nvim')
+    call <sid>hi('Floating', '', '02'  , '')
+endif
+if has('nvim') || v:version >= 800
+    call <sid>hi('Normal'                    , '05', ''  , '')
+else
+    " Old vim seems to require Normal background to be defined, else it errors
+    call <sid>hi('Normal'                    , '05', '00'  , '')
+endif
 call <sid>hi('LineNr'                    , '03', '01', '')
 call <sid>hi('SignColumn'                , '03', '01', '')
-call <sid>hi('StatusLine'                , '04', '02', '')
+call <sid>hi('StatusLine'                , '04', '02dim3', '')
 call <sid>hi('StatusLineNC'              , '03', '01', '')
-call <sid>hi('VertSplit'                 , '02', '02', '')
+call <sid>hi('VertSplit'                 , '02', ''  , '')
 call <sid>hi('ColorColumn'               , ''  , '01', '')
 call <sid>hi('CursorColumn'              , ''  , '01', '')
 call <sid>hi('CursorLine'                , ''  , '01', '')
@@ -215,8 +196,8 @@ call <sid>hi('gitcommitDiscardedFile'    , '08', ''  , 'bold')
 call <sid>hi('gitcommitSelectedFile'     , '0B', ''  , 'bold')
 
 " Diff highlighting
-call <sid>hi('DiffAdd'                   , ''  , '0Bdim' , '')
-call <sid>hi('DiffChange'                , ''  , '0Ddim' , '')
+call <sid>hi('DiffAdd'                   , ''  , '0Bdim1' , '')
+call <sid>hi('DiffChange'                , ''  , '0Ddim1' , '')
 call <sid>hi('DiffDelete'                , '08', '02'    , '')
 call <sid>hi('DiffText'                  , ''  , '0Ddim1', '')
 call <sid>hi('DiffAdded'                 , '0B', '02'    , '')
@@ -226,10 +207,10 @@ call <sid>hi('DiffLine'                  , '0A', '02'    , '')
 call <sid>hi('DiffRemoved'               , '08', '02'    , '')
 
 " GitGutter highlighting
-call <sid>hi('GitGutterAdd'              , '0B', '01', '')
-call <sid>hi('GitGutterChange'           , '0D', '01', '')
-call <sid>hi('GitGutterDelete'           , '08', '01', '')
-call <sid>hi('GitGutterChangeDelete'     , '0E', '01', '')
+call <sid>hi('GitGutterAdd'              , '0Bdim2', '01', '')
+call <sid>hi('GitGutterChange'           , '0Ddim2', '01', '')
+call <sid>hi('GitGutterDelete'           , '08'    , '01', '')
+call <sid>hi('GitGutterChangeDelete'     , '0Edim1', '01', '')
 
 " Signify highlighting
 hi link SignifySignAdd    GitGutterAdd
@@ -326,23 +307,18 @@ call <sid>hi('StatusbarHunksAdded'       , '0B', '02', '')
 call <sid>hi('StatusbarHunks'            , '05', '02', '')
 
 " https://github.com/numirias/semshi
-function! <sid>semshi_hi()
-    call <sid>hi('semshiLocal'          , '08' , '04', '')
-    call <sid>hi('semshiGlobal'         , '07' , ''  , '')  " Bright white
-    call <sid>hi('semshiImported'       , '0A' , ''  , '')  " Yellow
-    call <sid>hi('semshiParameter'      , '0Cb', ''  , '')  " Cyan
-    call <sid>hi('semshiParameterUnused', '0Cb', '02', '')
-    call <sid>hi('semshiFree'           , '05' , '02', '')
-    call <sid>hi('semshiBuiltin'        , '0D' , ''  , '')  " Blue
-    call <sid>hi('semshiAttribute'      , '0C' , ''  , '')
-    call <sid>hi('semshiSelf'           , '0C' , ''  , '')
-    call <sid>hi('semshiUnresolved'     , '08' , '03', 'bold')
-    call <sid>hi('semshiSelected'       , ''   , '05', '')
-    call <sid>hi('semshiErrorSign'      , '08' , '03', '')
-    call <sid>hi('semshiErrorChar'      , '08' , '03', '')
-endfunction
+call <sid>hi('semshiBuiltin'        , '0D', ''  , '')  " Blue
+call <sid>hi('semshiGlobal'         , '07', ''  , '')  " Bright white
+call <sid>hi('semshiImported'       , '0A', ''  , '')  " Yellow
+call <sid>hi('semshiParameter'      , '0C', ''  , '')  " Cyan
+call <sid>hi('semshiFree'           , '05', '02', '')
 
-autocmd! FileType python
-    \ | if exists('g:semshi#active')
-    \ |     call <sid>semshi_hi()
-    \ | endif
+" call <sid>hi('semshiAttribute'      , '0C', ''  , '')
+" call <sid>hi('semshiErrorChar'      , '08', '03', '')
+" call <sid>hi('semshiErrorSign'      , '08', '03', '')
+" call <sid>hi('semshiLocal'          , '08', '04', '')
+" call <sid>hi('semshiParameterUnused', '0C', '02', '')
+" call <sid>hi('semshiSelected'       , ''  , '05', '')
+" call <sid>hi('semshiSelf'           , '0C', ''  , '')
+" call <sid>hi('semshiUnresolved'     , '08', '03', 'bold')
+
