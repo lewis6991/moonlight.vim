@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-source ./colors.sh
+source "$(dirname "${BASH_SOURCE[0]}")/colors.sh"
 
 color00=$base00 # Black
 color01=$base08 # Red
