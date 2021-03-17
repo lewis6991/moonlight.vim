@@ -1,5 +1,5 @@
 " Theme setup
-hi clear
+highlight clear
 syntax reset
 let g:colors_name = 'moonlight'
 
@@ -25,7 +25,7 @@ endfunction
 
 " Blend some colors for some variety. Blended colors give some illusion of
 " transparency.
-for i in ['01', '02', '0B', '0D', '0E']
+for i in ['01', '02', '07', '08', '09', '0B', '0D', '0E', '0F']
     let s:colors.gui[i.'dim1'] = <sid>blend(s:colors.gui['00'], s:colors.gui[i], 20)
     let s:colors.cterm[i.'dim1'] = s:colors.cterm[i]
 
@@ -63,6 +63,7 @@ let g:terminal_color_17 = s:colors['gui']['0F']
 " Highlighting function
 function! <sid>hi(group, fg, bg, attr) abort
     let l:attr = a:attr ==# '' ? 'None' : a:attr
+    " execute 'highlight! clear ' a:group
     execute(join([
         \     'highlight',
         \     a:group,
@@ -126,7 +127,7 @@ call <sid>hi('CursorColumn'              , ''  , '01', '')
 call <sid>hi('CursorLine'                , ''  , '01', '')
 call <sid>hi('CursorLineNr'              , '04', '01', '')
 call <sid>hi('PMenu'                     , '05', '01', '')
-call <sid>hi('PMenuSel'                  , '01', '05', '')
+call <sid>hi('PMenuSel'                  , '05', '02', '')
 call <sid>hi('TabLine'                   , '03', '01', '')
 call <sid>hi('TabLineFill'               , '03', '01', '')
 call <sid>hi('TabLineSel'                , '05', '02', '')
@@ -206,16 +207,29 @@ call <sid>hi('DiffNewFile'               , '05', '02'    , '')
 call <sid>hi('DiffLine'                  , '0A', '02'    , '')
 call <sid>hi('DiffRemoved'               , '08', '02'    , '')
 
+" GitSigns highlighting
+call <sid>hi('GitSignsAdd'               , '0Bdim2', '01', '')
+call <sid>hi('GitSignsChange'            , '0Ddim2', '01', '')
+call <sid>hi('GitSignsDelete'            , '08'    , '01', '')
+
+call <sid>hi('GitSignsAddNr'             , '04', '0Bdim1', '')
+call <sid>hi('GitSignsChangeNr'          , '04', '0Ddim1', '')
+call <sid>hi('GitSignsDeleteNr'          , '04', '02'    , '')
+
+hi link GitSignsAddLn    DiffAdd
+hi link GitSignsChangeLn DiffChange
+hi link GitSignsDeleteLn DiffDelete
+
 " GitGutter highlighting
-call <sid>hi('GitGutterAdd'              , '0Bdim2', '01', '')
-call <sid>hi('GitGutterChange'           , '0Ddim2', '01', '')
-call <sid>hi('GitGutterDelete'           , '08'    , '01', '')
+hi link GitGutterAdd    GitSignsAdd
+hi link GitGutterChange GitSignsChange
+hi link GitGutterDelete GitSignsDelete
 call <sid>hi('GitGutterChangeDelete'     , '0Edim1', '01', '')
 
 " Signify highlighting
-hi link SignifySignAdd    GitGutterAdd
-hi link SignifySignChange GitGutterChange
-hi link SignifySignDelete GitGutterDelete
+hi link SignifySignAdd    GitSignsAdd
+hi link SignifySignChange GitSignsChange
+hi link SignifySignDelete GitSignsDelete
 
 " HTML highlighting
 call <sid>hi('htmlBold'                  , '0A', ''  , '')
@@ -321,4 +335,15 @@ call <sid>hi('semshiFree'           , '05', '02', '')
 " call <sid>hi('semshiSelected'       , ''  , '05', '')
 " call <sid>hi('semshiSelf'           , '0C', ''  , '')
 " call <sid>hi('semshiUnresolved'     , '08', '03', 'bold')
+
+call <sid>hi('LspDiagnosticsDefaultError'          , '0F'    , '01', '')
+call <sid>hi('LspDiagnosticsVirtualTextError'      , '0Fdim2',   '', '')
+call <sid>hi('LspDiagnosticsDefaultWarning'        , '09'    , '01', '')
+call <sid>hi('LspDiagnosticsVirtualTextWarning'    , '09dim2',   '', '')
+
+" call <sid>hi('LspDiagnosticsDefaultInformation'    , '07'    , '01', '')
+" call <sid>hi('LspDiagnosticsVirtualTextInformation', '07dim2',   '', '')
+
+" call <sid>hi('LspDiagnosticsDefaultHint'    , '02'    , '01', '')
+" call <sid>hi('LspDiagnosticsVirtualTextHint', '02dim2',   '', '')
 
