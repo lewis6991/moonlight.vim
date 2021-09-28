@@ -25,7 +25,7 @@ endfunction
 
 " Blend some colors for some variety. Blended colors give some illusion of
 " transparency.
-for i in ['01', '02', '07', '08', '09', '0B', '0D', '0E', '0F']
+for i in ['01', '02', '05', '07', '08', '09', '0B', '0D', '0E', '0F']
     let s:colors.gui[i.'dim1'] = <sid>blend(s:colors.gui['00'], s:colors.gui[i], 20)
     let s:colors.cterm[i.'dim1'] = s:colors.cterm[i]
 
@@ -73,6 +73,19 @@ function! <sid>hi(group, fg, bg, attr) abort
         \     'guibg='   . (a:bg ==# '' ? 'None' : s:colors.gui[a:bg]),
         \     'cterm='   . l:attr,
         \     'gui='     . l:attr
+        \ ]))
+endfunction
+
+" Highlighting function
+function! <sid>hisp(group, attr, sp) abort
+    let l:attr = a:attr ==# '' ? 'None' : a:attr
+    " execute 'highlight! clear ' a:group
+    execute(join([
+        \     'highlight',
+        \     a:group,
+        \     'cterm='   . l:attr,
+        \     'gui='     . l:attr,
+        \     'guisp='   . (a:sp ==# '' ? 'None' : s:colors.gui[a:sp])
         \ ]))
 endfunction
 
@@ -147,10 +160,12 @@ call <sid>hi('Include'                   , '0D', ''  , '')
 call <sid>hi('Keyword'                   , '0E', ''  , '')
 call <sid>hi('Label'                     , '0A', ''  , '')
 call <sid>hi('Number'                    , '09', ''  , '')
-call <sid>hi('Operator'                  , '05', ''  , '')
+" call <sid>hi('Operator'                  , '05', ''  , '')
+call <sid>hi('Operator'                  , '0C', ''  , '')
 call <sid>hi('PreProc'                   , '0A', ''  , '')
 call <sid>hi('Repeat'                    , '0A', ''  , '')
 call <sid>hi('Special'                   , '0C', ''  , '')
+" call <sid>hi('Special'                   , '0F', ''  , '')
 call <sid>hi('SpecialChar'               , '0F', ''  , '')
 call <sid>hi('Statement'                 , '08', ''  , '')
 call <sid>hi('StorageClass'              , '0A', ''  , '')
@@ -335,15 +350,15 @@ call <sid>hi('semshiFree'           , '05', '02', '')
 " call <sid>hi('semshiSelected'       , ''  , '05', '')
 " call <sid>hi('semshiSelf'           , '0C', ''  , '')
 " call <sid>hi('semshiUnresolved'     , '08', '03', 'bold')
+"
+function! <sid>hilsp(group, base) abort
+    call <sid>hi  ('LspDiagnosticsDefault'.a:group    , a:base       , '01', '')
+    call <sid>hi  ('LspDiagnosticsVirtualText'.a:group, a:base.'dim2', ''  , '')
+    call <sid>hisp('LspDiagnosticsUnderline'.a:group  , 'undercurl', a:base.'dim2')
+endfunction
 
-call <sid>hi('LspDiagnosticsDefaultError'          , '0F'    , '01', '')
-call <sid>hi('LspDiagnosticsVirtualTextError'      , '0Fdim2',   '', '')
-call <sid>hi('LspDiagnosticsDefaultWarning'        , '09'    , '01', '')
-call <sid>hi('LspDiagnosticsVirtualTextWarning'    , '09dim2',   '', '')
-
-" call <sid>hi('LspDiagnosticsDefaultInformation'    , '07'    , '01', '')
-" call <sid>hi('LspDiagnosticsVirtualTextInformation', '07dim2',   '', '')
-
-" call <sid>hi('LspDiagnosticsDefaultHint'    , '02'    , '01', '')
-" call <sid>hi('LspDiagnosticsVirtualTextHint', '02dim2',   '', '')
+call <sid>hilsp('Error'  , '0F')
+call <sid>hilsp('Warning', '09')
+call <sid>hilsp('Hint'   , '05')
+" call <sid>hilsp ('Information', '07')
 
